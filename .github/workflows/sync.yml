@@ -17,3 +17,18 @@ jobs:
       - name: Sync magento2 repository
         run: bin/mirror-sync.sh magento/magento2 mage-os/magento2
         shell: bash
+      - name: Sync zf1 repository
+        run: bin/mirror-sync.sh magento/zf1 mage-os/zf1
+        shell: bash
+      - name: Sync security-package repository
+        run: bin/mirror-sync.sh magento/security-package mage-os/security-package
+        shell: bash
+      - name: Sync magento2-page-builder repository
+        run: bin/mirror-sync.sh magento/magento2-page-builder mage-os/magento2-page-builder
+        shell: bash
+      - name: Sync inventory repository
+        run: bin/mirror-sync.sh magento/inventory mage-os/inventory
+        shell: bash
+      - name: Sync page-builder-types repository
+        run: bin/mirror-sync.sh magento/page-builder-types mage-os/page-builder-types
+        shell: bash
