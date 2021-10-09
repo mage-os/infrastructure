@@ -12,6 +12,7 @@ jobs:
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_KEY }}
+          known_hosts: "2048 SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8 github.com (RSA)"
       - uses: actions/checkout@v1
       - name: Sync magento2 repository
         run: bin/mirror-sync.sh magento/magento2 mage-os/magento2
