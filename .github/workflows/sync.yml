@@ -1,0 +1,18 @@
+name: Sync remote repositories with target ones
+on:
+  schedule: # Run schedule every 5 minutes
+    - "*/15 * * * *"
+  workflow_dispatch:
+
+jobs:
+  sync-main-repo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+      - uses: actions/checkout@v1
+      - name: Sync magento2 repository
+        run: bin/mirror-sync.sh magento/magento2 mage-os/magento2
+        shell: bash
