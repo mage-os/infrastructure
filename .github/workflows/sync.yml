@@ -1,4 +1,4 @@
-name: Sync remote repositories with target ones
+name: Sync remote repositories into mirrors for mage-os distribution
 on:
   schedule: # Run schedule every 15 minutes
     - cron: "*/15 * * * *"
@@ -15,20 +15,20 @@ jobs:
           known_hosts: "2048 SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8 github.com (RSA)"
       - uses: actions/checkout@v1
       - name: Sync magento2 repository
-        run: bin/mirror-sync.sh magento/magento2 mage-os/magento2
+        run: bin/mirror-sync.sh magento/magento2 mage-os/mirror-magento2
         shell: bash
       - name: Sync zf1 repository
-        run: bin/mirror-sync.sh magento/zf1 mage-os/zf1
+        run: bin/mirror-sync.sh magento/zf1 mage-os/mirror-zf1
         shell: bash
       - name: Sync security-package repository
-        run: bin/mirror-sync.sh magento/security-package mage-os/security-package
+        run: bin/mirror-sync.sh magento/security-package mage-os/mirror-security-package
         shell: bash
       - name: Sync magento2-page-builder repository
-        run: bin/mirror-sync.sh magento/magento2-page-builder mage-os/magento2-page-builder
+        run: bin/mirror-sync.sh magento/magento2-page-builder mage-os/mirror-magento2-page-builder
         shell: bash
       - name: Sync inventory repository
-        run: bin/mirror-sync.sh magento/inventory mage-os/inventory
+        run: bin/mirror-sync.sh magento/inventory mage-os/mirror-inventory
         shell: bash
       - name: Sync page-builder-types repository
-        run: bin/mirror-sync.sh magento/page-builder-types mage-os/page-builder-types
+        run: bin/mirror-sync.sh magento/page-builder-types mage-os/mirror-page-builder-types
         shell: bash
