@@ -1,7 +1,7 @@
 name: Sync remote repositories into mirrors for mage-os distribution
 on:
   schedule: # Run schedule every 15 minutes
-    - cron: "57 * * * *"
+    - cron: "57 9 * * *"
   workflow_dispatch:
 
 jobs:
