@@ -32,3 +32,6 @@ jobs:
       - name: Sync page-builder-types repository
         run: bin/mirror-sync.sh magento/page-builder-types mage-os/mirror-page-builder-types
         shell: bash
+      - name: Sync devdocs repository
+        run: bin/mirror-sync.sh magento/devdocs mage-os/mirror-devdocs
+        shell: bash
