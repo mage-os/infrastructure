@@ -32,6 +32,12 @@ jobs:
       - name: Sync page-builder-types repository
         run: bin/mirror-sync.sh magento/page-builder-types mage-os/mirror-page-builder-types
         shell: bash
+      - name: Sync composer-root-update-plugin repository
+        run: bin/mirror-sync.sh magento/composer-root-update-plugin mage-os/mirror-composer-root-update-plugin
+        shell: bash
+      - name: Sync composer-dependency-version-audit-plugin repository
+        run: bin/mirror-sync.sh magento/composer-dependency-version-audit-plugin mage-os/mirror-composer-dependency-version-audit-plugin
+        shell: bash
       - name: Sync devdocs repository
         run: bin/mirror-sync.sh magento/devdocs mage-os/mirror-devdocs
         shell: bash
