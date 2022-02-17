@@ -38,6 +38,12 @@ jobs:
       - name: Sync composer-dependency-version-audit-plugin repository
         run: bin/mirror-sync.sh magento/composer-dependency-version-audit-plugin mage-os/mirror-composer-dependency-version-audit-plugin
         shell: bash
+      - name: Sync magento2-sample-data repository
+        run: bin/mirror-sync.sh magento/magento2-sample-data mage-os/mirror-magento2-sample-data
+        shell: bash
+      - name: Sync module-configurable-sample-data-venia repository
+        run: bin/mirror-sync.sh magento/module-configurable-sample-data-venia mage-os/mirror-module-configurable-sample-data-venia
+        shell: bash
       - name: Sync devdocs repository
         run: bin/mirror-sync.sh magento/devdocs mage-os/mirror-devdocs
         shell: bash
