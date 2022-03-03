@@ -29,6 +29,9 @@ jobs:
       - name: Sync inventory repository
         run: bin/mirror-sync.sh magento/inventory mage-os/mirror-inventory
         shell: bash
+      - name: Sync inventory-composer-installer repository
+        run: bin/mirror-sync.sh magento/inventory-composer-installer mage-os/mirror-inventory-composer-installer
+        shell: bash
       - name: Sync page-builder-types repository
         run: bin/mirror-sync.sh magento/page-builder-types mage-os/mirror-page-builder-types
         shell: bash
