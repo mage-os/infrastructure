@@ -47,6 +47,9 @@ jobs:
       - name: Sync devdocs repository
         run: bin/mirror-sync.sh magento/devdocs mage-os/mirror-devdocs
         shell: bash
-      - name: Sync devdocs repository
+      - name: Sync adobe-ims repository
         run: bin/mirror-sync.sh magento/adobe-ims mage-os/mirror-adobe-ims
+        shell: bash
+      - name: Sync adobe-stock-integration repository
+        run: bin/mirror-sync.sh magento/adobe-stock-integration mage-os/mirror-adobe-stock-integration
         shell: bash
