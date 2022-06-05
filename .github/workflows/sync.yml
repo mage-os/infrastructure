@@ -56,4 +56,7 @@ jobs:
       - name: Sync adobe-stock-integration repository
         run: bin/mirror-sync.sh magento/adobe-stock-integration mage-os/mirror-adobe-stock-integration
         shell: bash
+      - name: Sync magento-composer-installer repository
+        run: bin/mirror-sync.sh magento/magento-composer-installer mage-os/mirror-magento-composer-installer
+        shell: bash
 
