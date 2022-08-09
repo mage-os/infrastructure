@@ -59,4 +59,7 @@ jobs:
       - name: Sync magento-composer-installer repository
         run: bin/mirror-sync.sh magento/magento-composer-installer mage-os/mirror-magento-composer-installer
         shell: bash
+      - name: Sync magento-composer repository
+        run: bin/mirror-sync.sh magento/composer mage-os/mirror-composer
+        shell: bash
 
