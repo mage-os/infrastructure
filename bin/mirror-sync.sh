@@ -8,6 +8,8 @@ BASENAME=$(basename $1)
 TMP_DIRECTORY=$(mktemp -d -t mirror-sync-XXXXXXXXXX)
 OLD_DIRECTORY=$PWD
 
+set -e
+
 cd $TMP_DIRECTORY
 
 git clone --mirror "$SOURCE" $BASENAME
