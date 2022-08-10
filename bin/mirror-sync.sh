@@ -13,7 +13,10 @@ cd $TMP_DIRECTORY
 git clone --mirror "$SOURCE" $BASENAME
 cd $BASENAME
 git remote add target "$TARGET"
-git push target --all
-git push target --tags
+
+# Sometimes upstream re-tags a buggy release
+git push target --all --force
+git push target --tags --force
+
 cd $OLD_DIRECTORY
 rm -rf $TMP_DIRECTORY
