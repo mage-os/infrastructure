@@ -1,0 +1,38 @@
+name: Integration Test
+
+on:
+  workflow_dispatch: 
+    inputs:
+      repo:
+        description: 'Repository'
+        required: true
+        default: 'https://preview-mirror.mage-os.org/'
+        type: choice
+        options:
+        - https://preview-mirror.mage-os.org/
+        - https://mirror.mage-os.org/
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  compute_matrix:
+      runs-on: ubuntu-latest
+      outputs:
+        matrix: ${{ steps.supported-version.outputs.matrix }}
+      steps:
+        - uses: actions/checkout@v3
+        - uses: graycoreio/github-actions-magento2/supported-version@main
+          with:
+            kind: all
+          id: supported-version
+  integration-workflow:
+    needs: compute_matrix
+    uses: graycoreio/github-actions-magento2/.github/workflows/integration.yaml@main
+    with:
+      package_name: mageos/demo-package
+      source_folder: $GITHUB_WORKSPACE/_test/demo-package
+      matrix: ${{ needs.compute_matrix.outputs.matrix }}
+      test_command: ../../../vendor/bin/phpunit ../../../vendor/mageos/demo-package/Test/Integration
+      fail-fast: false
+      magento_repository: ${{ inputs.repo && inputs.repo || 'https://preview-mirror.mage-os.org/' }}
