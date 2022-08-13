@@ -11,6 +11,13 @@ on:
         options:
         - https://preview-mirror.mage-os.org/
         - https://mirror.mage-os.org/
+
+      composer_cache_key:
+        description: 'The key used to version the cache, you can change it to trigger a composer cache bust.'
+        required: true
+        default: "v1"
+        type: "string"
+        
   pull_request:
     branches:
     - main
@@ -36,3 +43,4 @@ jobs:
       test_command: ../../../vendor/bin/phpunit ../../../vendor/mageos/demo-package/Test/Integration
       fail-fast: false
       magento_repository: ${{ inputs.repo && inputs.repo || 'https://preview-mirror.mage-os.org/' }}
+      composer_cache_key: ${{ inputs.composer_cache_key && inputs.composer_cache_key || 'v1' }}
