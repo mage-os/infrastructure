@@ -62,4 +62,7 @@ jobs:
       - name: Sync magento-composer repository
         run: bin/mirror-sync.sh magento/composer mage-os/mirror-composer
         shell: bash
+      - name: Sync commerce-data-export repository
+        run: bin/mirror-sync.sh magento/commerce-data-export mage-os/mirror-commerce-data-export
+        shell: bash
 
