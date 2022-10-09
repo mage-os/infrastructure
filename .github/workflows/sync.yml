@@ -7,6 +7,26 @@ on:
 jobs:
   sync-main-repo:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package: 
+          - magento2
+          - magento2-sample-data
+          - magento2-page-builder
+          - magento-composer-installer
+          - zf1
+          - security-package
+          - inventory
+          - inventory-composer-installer
+          - page-builder-types
+          - composer-root-update-plugin
+          - composer-dependency-version-audit-plugin 
+          - module-configurable-sample-data-venia
+          - devdocs
+          - adobe-ims
+          - adobe-stock-integration
+          - composer
+          - commerce-data-export
     steps:
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
@@ -14,55 +34,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           known_hosts: "2048 SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8 github.com (RSA)"
       - uses: actions/checkout@v1
-      - name: Sync magento2 repository
-        run: bin/mirror-sync.sh magento/magento2 mage-os/mirror-magento2
+      - name: Sync magento/${{ matrix.package }} repository
+        run: bin/mirror-sync.sh magento/${{ matrix.package }} mage-os/mirror-${{ matrix.package }}
         shell: bash
-      - name: Sync zf1 repository
-        run: bin/mirror-sync.sh magento/zf1 mage-os/mirror-zf1
-        shell: bash
-      - name: Sync security-package repository
-        run: bin/mirror-sync.sh magento/security-package mage-os/mirror-security-package
-        shell: bash
-      - name: Sync magento2-page-builder repository
-        run: bin/mirror-sync.sh magento/magento2-page-builder mage-os/mirror-magento2-page-builder
-        shell: bash
-      - name: Sync inventory repository
-        run: bin/mirror-sync.sh magento/inventory mage-os/mirror-inventory
-        shell: bash
-      - name: Sync inventory-composer-installer repository
-        run: bin/mirror-sync.sh magento/inventory-composer-installer mage-os/mirror-inventory-composer-installer
-        shell: bash
-      - name: Sync page-builder-types repository
-        run: bin/mirror-sync.sh magento/page-builder-types mage-os/mirror-page-builder-types
-        shell: bash
-      - name: Sync composer-root-update-plugin repository
-        run: bin/mirror-sync.sh magento/composer-root-update-plugin mage-os/mirror-composer-root-update-plugin
-        shell: bash
-      - name: Sync composer-dependency-version-audit-plugin repository
-        run: bin/mirror-sync.sh magento/composer-dependency-version-audit-plugin mage-os/mirror-composer-dependency-version-audit-plugin
-        shell: bash
-      - name: Sync magento2-sample-data repository
-        run: bin/mirror-sync.sh magento/magento2-sample-data mage-os/mirror-magento2-sample-data
-        shell: bash
-      - name: Sync module-configurable-sample-data-venia repository
-        run: bin/mirror-sync.sh magento/module-configurable-sample-data-venia mage-os/mirror-module-configurable-sample-data-venia
-        shell: bash
-      - name: Sync devdocs repository
-        run: bin/mirror-sync.sh magento/devdocs mage-os/mirror-devdocs
-        shell: bash
-      - name: Sync adobe-ims repository
-        run: bin/mirror-sync.sh magento/adobe-ims mage-os/mirror-adobe-ims
-        shell: bash
-      - name: Sync adobe-stock-integration repository
-        run: bin/mirror-sync.sh magento/adobe-stock-integration mage-os/mirror-adobe-stock-integration
-        shell: bash
-      - name: Sync magento-composer-installer repository
-        run: bin/mirror-sync.sh magento/magento-composer-installer mage-os/mirror-magento-composer-installer
-        shell: bash
-      - name: Sync magento-composer repository
-        run: bin/mirror-sync.sh magento/composer mage-os/mirror-composer
-        shell: bash
-      - name: Sync commerce-data-export repository
-        run: bin/mirror-sync.sh magento/commerce-data-export mage-os/mirror-commerce-data-export
-        shell: bash
-
