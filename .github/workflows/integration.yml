@@ -22,7 +22,7 @@ on:
     branches:
     - main
     paths:
-    - ".github/workflows/integration.yaml"
+    - ".github/workflows/integration.yml"
     - "!(**/*.md)"
 
 jobs:
