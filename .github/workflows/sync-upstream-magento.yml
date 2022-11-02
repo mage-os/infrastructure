@@ -1,4 +1,4 @@
-name: Sync remote repositories from the magento/ org into mirrors for mage-os distribution
+name: Sync magento/ org upstream repositories into mirrors for mage-os distribution
 on:
   schedule: # Run schedule every day at 9:57
     - cron: "57 9 * * *"
