@@ -1,4 +1,4 @@
-name: Sync remote repositories into mirrors for mage-os distribution
+name: Sync remote repositories from the magento/ org into mirrors for mage-os distribution
 on:
   schedule: # Run schedule every day at 9:57
     - cron: "57 9 * * *"
@@ -30,7 +30,7 @@ jobs:
           - magento-semver
     steps:
       - name: Install SSH Key
-        uses: shimataro/ssh-key-action@v2.3.1
+        uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_KEY }}
           known_hosts: "2048 SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8 github.com (RSA)"
