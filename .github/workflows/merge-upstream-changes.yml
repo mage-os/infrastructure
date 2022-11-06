@@ -59,6 +59,8 @@ jobs:
         run: |
           git push origin ${{ matrix.branch }}
           git push --delete origin ${{ matrix.branch }}-upstream || true
+        env:
+          GITHUB_TOKEN: ${{ secrets.MAGE_OS_CI_TOKEN }}
 
       # If the merge failed, checkout the upstream branch and push it to our repo.
       - name: Create Upstream Branch
@@ -69,6 +71,8 @@ jobs:
           git checkout -b ${{ matrix.branch }}-upstream FETCH_HEAD
           git push --set-upstream --force origin ${{ matrix.branch }}-upstream
           git remote remove upstream
+        env:
+          GITHUB_TOKEN: ${{ secrets.MAGE_OS_CI_TOKEN }}
 
       # If the merge failed, and we successfully created an upstream branch, create a pull request.
       - name: Create Pull Request
@@ -79,7 +83,7 @@ jobs:
           draft: true
           title: "Upstream Merge Conflict (${{ matrix.branch }})"
           body: "This PR was automatically generated: a human is required.\n\n${{ steps.merge.outputs.merge }}"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.MAGE_OS_CI_TOKEN }}
           source_branch: ${{ matrix.branch }}-upstream
           target_branch: ${{ matrix.branch }}
 
