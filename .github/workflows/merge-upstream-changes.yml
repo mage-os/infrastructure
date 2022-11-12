@@ -12,6 +12,8 @@ on:
     secrets:
       DISCORD_WEBHOOK:
         required: true
+      MAGE_OS_CI_TOKEN:
+        required: true
 
 jobs:
   pull-upstream:
