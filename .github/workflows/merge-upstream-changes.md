@@ -18,4 +18,5 @@ jobs:
       matrix: '{ branch: ["develop"] }'
     secrets: 
       DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      MAGEOS_GITHUB_TOKEN: ${{ secrets.MAGE_OS_CI_TOKEN }} # Currently, this is an organization wide secret.
 ```
