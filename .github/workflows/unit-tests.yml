@@ -25,7 +25,6 @@ jobs:
       - name: Debug output
         run: |
           echo "PHP Versions: ${{ steps.set-matrix.outputs.php_versions }}"
-          echo "Database Versions: ${{ steps.set-matrix.outputs.database_versions }}"
     
   unit-tests:
     needs: matrix-calculator
@@ -33,7 +32,6 @@ jobs:
       fail-fast: false
       matrix:
         php_version: ${{ fromJSON(needs.matrix-calculator.outputs.php_versions) }}
-        db_version: ${{ fromJSON(needs.matrix-calculator.outputs.database_versions) }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout PR commit
