@@ -1,0 +1,135 @@
+name: Unit Tests
+run-name: ${{ github.actor }} is running Unit Tests
+on: [workflow_call]
+
+permissions:
+  contents: write
+
+jobs:
+  matrix-calculator:
+    runs-on: ubuntu-latest
+    outputs:
+      php_versions: ${{ steps.set-matrix.outputs.php_versions }}
+      database_versions: ${{ steps.set-matrix.outputs.database_versions }}
+    steps:
+      - name: Checkout PR commit
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - id: set-matrix
+        name: Calculate Matrix
+        run: |
+          echo "php_versions=$(jq -c .services.php supported-services.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Debug output
+        run: |
+          echo "PHP Versions: ${{ steps.set-matrix.outputs.php_versions }}"
+          echo "Database Versions: ${{ steps.set-matrix.outputs.database_versions }}"
+    
+  unit-tests:
+    needs: matrix-calculator
+    strategy:
+      fail-fast: false
+      matrix:
+        php_version: ${{ fromJSON(needs.matrix-calculator.outputs.php_versions) }}
+        db_version: ${{ fromJSON(needs.matrix-calculator.outputs.database_versions) }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR commit
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: main
+          # Need to do this otherwise Nx cant determine diff
+          fetch-depth: 0
+
+      - name: Fetch base
+        working-directory: ./main
+        run: git fetch origin ${{ github.event.pull_request.base.ref }}
+
+      - name: Install Composer
+        uses: php-actions/composer@v6
+        with:
+          # Run the dummy help command after installing Composer (otherwise defaults to install)
+          command: help
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        working-directory: ./main
+        run: echo "composer_cache_dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Install Composer Cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.composer_cache_dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/main/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install Composer Dependencies
+        working-directory: ./main
+        run: composer install
+
+      - name: Checkout Nx Repo
+        uses: actions/checkout@v3
+        with:
+          repository: adamzero1/nx-for-php
+          ref: docker-wrapper
+          path: nx
+
+      - name: Install / setup Nx
+        working-directory: ./main
+        run: |
+          npm install -g nx@15.4.1
+          NXDIR="../nx"
+          cp -r ${NXDIR}/nx ./ 
+          cp ${NXDIR}/nx.json ./ 
+          cp ${NXDIR}/package.json ./ 
+          cp ${NXDIR}/package-lock.json ./ 
+          npm ci
+          npm run generate-workspace
+
+      - name: Print Affected
+        working-directory: ./main
+        run: |
+          AFFECTED_OUTPUT=/tmp/affect.json
+          nx print-affected --head=HEAD --base=remotes/origin/${{ github.event.pull_request.base.ref }} > ${AFFECTED_OUTPUT}
+          echo "Affected Projects: $(jq .projects ${AFFECTED_OUTPUT})"
+      
+      # Warden / Den stuff
+      - name: Checkout Den Repo
+        uses: actions/checkout@v3
+        with:
+          repository: swiftotter/den
+          path: den
+
+      - name: Init / Configure Den
+        working-directory: ./main
+        run: |
+          DEN=/home/runner/work/magento2/magento2/den/bin/den
+          ${DEN} env-init magento2 magento2
+          sed -i 's/WARDEN_DB=.*/WARDEN_DB=0/g' .env
+          sed -i 's/WARDEN_TEST_DB=.*/WARDEN_TEST_DB=0/g' .env
+          sed -i 's/WARDEN_ELASTICSEARCH=.*/WARDEN_ELASTICSEARCH=0/g' .env
+          sed -i 's/WARDEN_OPENSEARCH=.*/WARDEN_OPENSEARCH=0/g' .env
+          sed -i 's/WARDEN_ELASTICHQ=.*/WARDEN_ELASTICHQ=0/g' .env
+          sed -i 's/WARDEN_VARNISH=.*/WARDEN_VARNISH=0/g' .env
+          sed -i 's/WARDEN_RABBITMQ=.*/WARDEN_RABBITMQ=0/g' .env
+          sed -i 's/WARDEN_REDIS=.*/WARDEN_REDIS=0/g' .env
+          sed -i 's/PHP_VERSION=.*/PHP_VERSION=${{ matrix.php_version }}/g' .env
+          ${DEN} env up
+          echo ${{secrets.DEPLOY_PASSWORD}} | sudo -S chmod -R a+rw .
+
+      - name: Configure PHPUnit
+        working-directory: ./main
+        run: |
+          cp dev/tests/unit/phpunit.xml.dist dev/tests/unit/phpunit.xml
+          sed -i '/<extensions>/,/<\/extensions>/d' dev/tests/unit/phpunit.xml
+
+      - name: Run PHPUnit Nx
+        working-directory: ./main
+        run: |
+          export DEN=/home/runner/work/magento2/magento2/den/bin/den
+          nx affected --target=test:unit --head=HEAD --base=remotes/origin/${{ github.event.pull_request.base.ref }}
