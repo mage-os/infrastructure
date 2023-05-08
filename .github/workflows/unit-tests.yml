@@ -99,7 +99,7 @@ jobs:
       - name: Checkout Den Repo
         uses: actions/checkout@v3
         with:
-          repository: swiftotter/den
+          repository: wardenenv/warden
           path: den
 
       - name: Init / Configure Den
