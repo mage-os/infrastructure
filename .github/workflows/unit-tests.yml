@@ -100,12 +100,12 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: wardenenv/warden
-          path: den
+          path: warden
 
       - name: Init / Configure Den
         working-directory: ./main
         run: |
-          DEN=/home/runner/work/magento2/magento2/den/bin/den
+          DEN=/home/runner/work/magento2/magento2/den/bin/warden
           ${DEN} env-init magento2 magento2
           sed -i 's/WARDEN_DB=.*/WARDEN_DB=0/g' .env
           sed -i 's/WARDEN_TEST_DB=.*/WARDEN_TEST_DB=0/g' .env
