@@ -105,7 +105,7 @@ jobs:
       - name: Init / Configure Den
         working-directory: ./main
         run: |
-          DEN=/home/runner/work/magento2/magento2/den/bin/warden
+          DEN=/home/runner/work/magento2/magento2/warden/bin/warden
           ${DEN} env-init magento2 magento2
           sed -i 's/WARDEN_DB=.*/WARDEN_DB=0/g' .env
           sed -i 's/WARDEN_TEST_DB=.*/WARDEN_TEST_DB=0/g' .env
@@ -128,5 +128,5 @@ jobs:
       - name: Run PHPUnit Nx
         working-directory: ./main
         run: |
-          export DEN=/home/runner/work/magento2/magento2/den/bin/den
+          export DEN=/home/runner/work/magento2/magento2/warden/bin/warden
           nx affected --target=test:unit --head=HEAD --base=remotes/origin/${{ github.event.pull_request.base.ref }}
