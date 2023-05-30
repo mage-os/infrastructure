@@ -95,18 +95,18 @@ jobs:
           nx print-affected --head=HEAD --base=remotes/origin/${{ github.event.pull_request.base.ref }} > ${AFFECTED_OUTPUT}
           echo "Affected Projects: $(jq .projects ${AFFECTED_OUTPUT})"
       
-      # Warden / Den stuff
-      - name: Checkout Den Repo
+      # Warden stuff
+      - name: Checkout Warden Repo
         uses: actions/checkout@v3
         with:
           repository: wardenenv/warden
           path: warden
 
-      - name: Init / Configure Den
+      - name: Init / Configure Warden
         working-directory: ./main
         run: |
-          DEN=/home/runner/work/magento2/magento2/warden/bin/warden
-          ${DEN} env-init magento2 magento2
+          WARDEN=/home/runner/work/magento2/magento2/warden/bin/warden
+          ${WARDEN} env-init magento2 magento2
           sed -i 's/WARDEN_DB=.*/WARDEN_DB=0/g' .env
           sed -i 's/WARDEN_TEST_DB=.*/WARDEN_TEST_DB=0/g' .env
           sed -i 's/WARDEN_ELASTICSEARCH=.*/WARDEN_ELASTICSEARCH=0/g' .env
@@ -116,7 +116,7 @@ jobs:
           sed -i 's/WARDEN_RABBITMQ=.*/WARDEN_RABBITMQ=0/g' .env
           sed -i 's/WARDEN_REDIS=.*/WARDEN_REDIS=0/g' .env
           sed -i 's/PHP_VERSION=.*/PHP_VERSION=${{ matrix.php_version }}/g' .env
-          ${DEN} env up
+          ${WARDEN} env up
           echo ${{secrets.DEPLOY_PASSWORD}} | sudo -S chmod -R a+rw .
 
       - name: Configure PHPUnit
@@ -128,5 +128,5 @@ jobs:
       - name: Run PHPUnit Nx
         working-directory: ./main
         run: |
-          export DEN=/home/runner/work/magento2/magento2/warden/bin/warden
+          export WARDEN=/home/runner/work/magento2/magento2/warden/bin/warden
           nx affected --target=test:unit --head=HEAD --base=remotes/origin/${{ github.event.pull_request.base.ref }}
