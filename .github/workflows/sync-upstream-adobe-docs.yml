@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        package: 
+        package:
           - commerce-operations.en
           - commerce-admin.en
     steps:
@@ -18,7 +18,7 @@ jobs:
         with:
           key: ${{ secrets.SSH_KEY }}
           known_hosts: "2048 SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8 github.com (RSA)"
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: Sync AdobeDocs/${{ matrix.package }} repository
         run: bin/mirror-sync.sh AdobeDocs/${{ matrix.package }} mage-os/mirror-${{ matrix.package }}
         shell: bash
