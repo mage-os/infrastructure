@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        package: 
+        package:
           - magento2
           - magento2-sample-data
           - magento2-page-builder
@@ -20,7 +20,7 @@ jobs:
           - inventory-composer-installer
           - page-builder-types
           - composer-root-update-plugin
-          - composer-dependency-version-audit-plugin 
+          - composer-dependency-version-audit-plugin
           - module-configurable-sample-data-venia
           - devdocs
           - adobe-ims
@@ -36,7 +36,7 @@ jobs:
         with:
           key: ${{ secrets.SSH_KEY }}
           known_hosts: "2048 SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8 github.com (RSA)"
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: Sync magento/${{ matrix.package }} repository
         run: bin/mirror-sync.sh magento/${{ matrix.package }} mage-os/mirror-${{ matrix.package }}
         shell: bash
