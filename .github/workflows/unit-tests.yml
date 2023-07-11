@@ -105,7 +105,7 @@ jobs:
       - name: Init / Configure Warden
         working-directory: ./main
         run: |
-          WARDEN=/home/runner/work/magento2/magento2/warden/bin/warden
+          WARDEN="$(dirname $(pwd))/warden/bin/warden"
           ${WARDEN} env-init magento2 magento2
           sed -i 's/WARDEN_DB=.*/WARDEN_DB=0/g' .env
           sed -i 's/WARDEN_TEST_DB=.*/WARDEN_TEST_DB=0/g' .env
@@ -128,5 +128,6 @@ jobs:
       - name: Run PHPUnit Nx
         working-directory: ./main
         run: |
-          export WARDEN=/home/runner/work/magento2/magento2/warden/bin/warden
+          export WARDEN="$(dirname $(pwd))/warden/bin/warden"
+          export DEN="$(dirname $(pwd))/warden/bin/warden"
           nx affected --target=test:unit --head=HEAD --base=remotes/origin/${{ github.event.pull_request.base.ref }}
