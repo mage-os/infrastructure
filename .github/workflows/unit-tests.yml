@@ -105,6 +105,10 @@ jobs:
       - name: Init / Configure Warden
         working-directory: ./main
         run: |
+          pwd
+          ls -lath
+          whoami
+          exit 1
           WARDEN=/home/runner/work/magento2/magento2/warden/bin/warden
           ${WARDEN} env-init magento2 magento2
           sed -i 's/WARDEN_DB=.*/WARDEN_DB=0/g' .env
