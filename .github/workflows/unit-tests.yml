@@ -128,5 +128,5 @@ jobs:
       - name: Run PHPUnit Nx
         working-directory: ./main
         run: |
-          export WARDEN=/home/runner/work/magento2/magento2/warden/bin/warden
+          export WARDEN="$(dirname $(pwd))/warden/bin/warden"
           nx affected --target=test:unit --head=HEAD --base=remotes/origin/${{ github.event.pull_request.base.ref }}
