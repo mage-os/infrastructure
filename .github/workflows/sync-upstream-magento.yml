@@ -32,6 +32,13 @@ jobs:
           - magento-cloud-patches
           - magento-coding-standard
           - magento2-functional-testing-framework
+          - magento-zend-db
+          - magento-zend-loader
+          - magento-zend-pdf
+          - magento-zend-cache
+          - magento-zend-exception
+          - magento-zend-log
+          - magento-zend-memory
     steps:
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
