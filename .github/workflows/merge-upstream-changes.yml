@@ -53,7 +53,7 @@ jobs:
           git fetch upstream ${{ matrix.branch }}
           git merge --no-edit FETCH_HEAD 2>&1 | tee merge.log
           result_code=${PIPESTATUS[0]}
-          echo "::set-output name=merge::$(cat merge.log)"
+          echo "merge=$(cat merge.log)" >> $GITHUB_OUTPUT
           exit $result_code
 
       # When merge succeeds, simply push to the original branch.
