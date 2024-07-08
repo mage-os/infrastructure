@@ -46,6 +46,15 @@ jobs:
         working-directory: ./main
         run: git fetch origin ${{ github.event.pull_request.base.ref }}
 
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php_version }}
+          extensions: bcmath, ctype, curl, dom, fileinfo, filter, gd, hash, iconv, intl, json, libxml, mbstring, openssl, pcre, pdo_mysql, simplexml, soap, sockets, sodium, tokenizer, xmlwriter, xsl, zip, zlib
+
+      - name: Check PHP Version
+        run: php -v
+
       - name: Install Composer
         uses: php-actions/composer@v6
         with:
