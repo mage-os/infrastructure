@@ -70,7 +70,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.composer_cache_dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/main/composer.lock') }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('main/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
 
